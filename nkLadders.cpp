@@ -2,20 +2,18 @@
 
 using namespace std;
 
-// top down
-int findWays(int steps, int jumps, int dp[]) {
-    if (steps == 0) return 1;
-    if (steps < 0) return 0;
-    if (dp[steps] != 0) return dp[steps];
-
-    int ans = 0;
-    for (int i = 1; i <= jumps; i++) {
-        if (steps-i >= 0) {
-            ans += findWays(steps-i, jumps, dp);
+// bottom up
+int findWays(int steps, int jumps) {
+    int dp[100] = {0};
+    dp[0] = 1;
+    for (int i = 1; i <= steps; i++) {
+        for (int j = 1; j <= jumps; j++){
+             if (i-j >= 0) {
+                dp[i] += dp[i-j];
+            }
         }
     }
 
-    dp[steps] = ans;
     return dp[steps];
 }
 
@@ -23,9 +21,7 @@ int main(void) {
     int N, S;
     cin >> N >> S;
 
-    int dp[100] = {0};
-
-    cout << findWays(N, S, dp) << endl;
+    cout << findWays(N, S) << endl;
 
 
     return 0;
